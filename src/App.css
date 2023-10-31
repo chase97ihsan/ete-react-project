@@ -1,38 +1,207 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap");
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.AnaSayfa {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-image: url("../public/blue_gradient_background-wallpaper-5120x2880.jpg");
+  background-position: center;
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.heading {
+  display: inline-block;
+  height: 100vh;
+  width: 1000px;
+  margin-top: 4%;
+  font-family: "Nunito", sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.heading h1 {
+  color: #2384cf;
+  font-weight: 900;
+  font-size: 125px;
+}
+.heading h2 {
+  color: rgba(3, 255, 255, 0.867);
+  font-size: 47px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.form {
+  width: 900px;
+  height: 100vh;
+  position: relative;
+}
+
+.signForm {
+  left: 50%;
+  top: 50%;
+  margin-left: -150px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  margin-top: -290px;
+  text-align: center;
+  position: absolute;
+  gap: 30px;
+}
+.h3-tologin {
+  left: 50%;
+  top: 80%;
+  width: 300px;
+  height: 70px;
+  margin-left: -150px;
+  margin-top: -35px;
+  position: absolute;
+  text-align: center;
+}
+
+.sign-input {
+  width: 300px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid rgb(241, 233, 233);
+}
+.sign-h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+}
+.sign-error {
+  color: red;
+  text-align: start;
+  margin-top: 0px;
+}
+.sign-button {
+  width: 170px;
+  height: 40px;
+  border-radius: 76px;
+  background-color: #2295ec;
+  border: #2295ec;
+  color: white;
+  font-size: medium;
+  cursor: pointer;
+}
+.sign-button:hover {
+  background-color: #1f85d4;
+}
+.to-login {
+  width: 300px;
+  height: 40px;
+  border-radius: 76px;
+  font-size: medium;
+  cursor: pointer;
+  display: inline-block;
+  background-color: white;
+  color: #2295ec;
+  border: 1px solid rgb(241, 233, 233);
+  text-decoration: none;
+}
+.to-login:hover {
+  background-color: rgb(229, 237, 250);
+}
+
+/* After become login; */
+
+.action-button {
+  height: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  border-radius: 4px;
+  background-color: #3b82f6;
+  color: #fff;
+}
+.empty-page {
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #fcd34d;
+  color: #f59e0b;
+  font-size: 14px;
+}
+.search {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 8px;
+}
+.search-input {
+  height: 40px;
+  outline: none;
+  border: 1px solid #000;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 16px;
+  width: 100%;
+  border-color: #ccc;
+}
+.table {
+  width: 100%;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 4px;
+}
+.table table {
+  width: 100%;
+}
+.table-headers {
+  text-align: c;
+  background-color: #f9fafb;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.items {
+  padding: 12px;
+  font-size: 14px;
+}
+.items:hover {
+  background-color: #93c5fd;
+  color: #2563eb;
+}
+.item {
+  display: flex;
+  gap: 10px;
+}
+
+/* Header ; */
+
+.header-link {
+  min-width: 170px;
+  width: auto;
+  height: 40px;
+  border-radius: 76px;
+  background-color: #276bc4;
+  border: #2295ec;
   color: white;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  margin-bottom: 100px;
 }
 
-.App-link {
-  color: #61dafb;
-}
+/* Container*/
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container {
+  margin: 0 auto;
+  max-width: 1000px;
 }
