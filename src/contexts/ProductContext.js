@@ -41,18 +41,18 @@ function ProductContextProvider({ children }) {
   };
 
   const getProducts = () => {
-    console.log("gelmisş");
     axios
-      .get("http://localhost:9000/product/", {
+      .get(
+        "http://localhost:9000/products/" /*, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
+      }*/
+      )
       .then((res) => {
         if (res.data.length !== 0) {
           setAllProducts(res.data.slice().reverse());
           console.log(res.data);
-          console.log("oldumuki");
         } else if (res.data.length !== 0) {
           console.log("There is no any product to show");
         }

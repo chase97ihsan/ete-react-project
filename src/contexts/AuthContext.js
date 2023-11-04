@@ -5,19 +5,14 @@ import useLocalStorage from "../hooks/UseLocalStorage";
 
 export const AuthContext = createContext();
 function AuthContextProvider({ children }) {
-  const [authInfo, setAuthInfo] = useLocalStorage("User", {});
+  const [authInfo, setAuthInfo] = useLocalStorage("Token", {});
   const navigate = useNavigate();
-  const storedData = localStorage.getItem("User");
+
+  const storedData = localStorage.getItem("Token");
   const parsedData = JSON.parse(storedData);
   let token;
-  let email;
-  let firstName;
-  let lastName;
   if (storedData) {
     token = parsedData.token;
-    email = parsedData.email;
-    firstName = parsedData.firstName;
-    lastName = parsedData.lastName;
   } else {
     console.log("Local storage value is empty!");
   }
@@ -26,11 +21,12 @@ function AuthContextProvider({ children }) {
     axios
       .post("http://localhost:9000/auth/login", credentials)
       .then((res) => {
-        if (res.data.token !== "") {
+        if (res.data.token && res.data.token !== "") {
           setAuthInfo(res.data);
           const expirationTime = new Date().getTime() + 3 * 60 * 60 * 1000; // 3 saatlik süre
-          localStorage.setItem("userExpiration", expirationTime);
+          localStorage.setItem("tokenExpiration", expirationTime);
           console.log(res.data);
+          console.log("olduu");
           navigate("/home-page");
         } else {
           console.log(res.data);
@@ -41,32 +37,33 @@ function AuthContextProvider({ children }) {
       });
   };
   /*Token süresi*/
-  const tokenExpiration = localStorage.getItem("userExpiration");
+  const tokenExpiration = localStorage.getItem("tokenExpiration");
   if (tokenExpiration && new Date().getTime() > tokenExpiration) {
     // Token süresi dolmuş, token'i temizle
-    localStorage.removeItem("User");
-    localStorage.removeItem("userExpiration");
+    localStorage.removeItem("Token");
+    localStorage.removeItem("tokenExpiration");
   }
 
-  const logOut = () => {
+  /* const logOut = () => {
     axios
       .post("http://localhost:9000/auth/logout", { email })
       .then((res) => {
         console.log(res.data);
         if (res.data !== "" || res.data !== null) {
           navigate("/login");
-          localStorage.removeItem("User");
-          localStorage.removeItem("userExpiration");
+          localStorage.removeItem("Token");
+          localStorage.removeItem("tokenExpiration");
         }
       })
       .catch((err) => {
         console.log(err);
       });
-  };
+  };*/
   const signIn = (formdata) => {
     axios.post("http://localhost:9000/auth/register", formdata).then((res) => {
       if (res.data !== "") {
         navigate("/logIn");
+        console.log(res.data);
       } else {
         navigate("/");
         console.log(res.data);
@@ -77,15 +74,12 @@ function AuthContextProvider({ children }) {
     <AuthContext.Provider
       value={{
         logIn,
-        logOut,
+        // logOut,
         signIn,
         authInfo,
         token,
-        email,
         parsedData,
         storedData,
-        firstName,
-        lastName,
       }}
     >
       {children}

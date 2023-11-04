@@ -14,13 +14,15 @@ function HomePage() {
   const { getProducts, updateProduct, deleteProduct, allProducts } =
     useContext(ProductContext);
   const navigate = useNavigate();
-  useEffect(() => {
+  /*useEffect(() => {
     if (Object.keys(parsedData).length !== 0) {
       getProducts();
-      getCompanies();
     } else if (Object.keys(parsedData).length === 0) {
       navigate("/");
     }
+  }, []);*/
+  useEffect(() => {
+    getCompanies();
   }, []);
   return (
     <div className="container">
@@ -38,18 +40,18 @@ function HomePage() {
                   { name: "Legal-Number" },
                   { name: "Country" },
                   { name: "Website" },
-                  { name: "Action", width: 150 },
+                  { name: "Action", width: 100 },
                 ]}
                 body={
                   allCompanies &&
                   allCompanies.map((company, key) => [
                     company.id,
-                    <div key={`${company.companyName}`}>
-                      {company.companyName}
+                    <div className="name" key={`${company.name}`}>
+                      {company.name}
                     </div>,
-                    company.companyLegalNumber,
-                    company.companyIncorporationCountry,
-                    company.companyWebsite,
+                    company.legalNumber,
+                    company.country,
+                    company.website,
                     [
                       <button
                         key={`edit-${company.id}`}
@@ -59,7 +61,9 @@ function HomePage() {
                       </button>,
                       <button
                         key={`delete-${company.id}`}
-                        onClick={deleteCompany(company.id)}
+                        onClick={() => {
+                          deleteCompany(company.id);
+                        }}
                         className="action-button"
                         style={{ backgroundColor: " #ef4444" }}
                       >
@@ -71,8 +75,9 @@ function HomePage() {
               />
             }
           />
+          (
           <Route
-            path="/home-page/products"
+            path="home-page/products"
             element={
               <ProductsTable
                 searchable={true}
@@ -88,11 +93,15 @@ function HomePage() {
                   allProducts &&
                   allProducts.map((product, key) => [
                     product.id,
-                    <div key={`${product.productName}`}>
-                      {product.productName}
+                    <div
+                      className="name"
+                      style={{ paddingLeft: "65px" }}
+                      key={`${product.name}`}
+                    >
+                      {product.name}
                     </div>,
-                    product.productCategory,
-                    product.productAmount,
+                    product.category,
+                    product.amount,
                     product.amountUnit,
                     [
                       <button
@@ -103,7 +112,9 @@ function HomePage() {
                       </button>,
                       <button
                         key={`delete-${product.id}`}
-                        onClick={deleteProduct(product.id)}
+                        onClick={() => {
+                          deleteProduct(product.id);
+                        }}
                         className="action-button"
                         style={{ backgroundColor: " #ef4444" }}
                       >
@@ -115,6 +126,7 @@ function HomePage() {
               />
             }
           />
+          )
         </Routes>
       </section>
     </div>

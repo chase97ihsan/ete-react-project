@@ -205,3 +205,8 @@
   margin: 0 auto;
   max-width: 1000px;
 }
+.name {
+  margin-left: 20px;
+  width: 120px;
+  text-align: start;
+}

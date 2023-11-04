@@ -12,18 +12,22 @@ import ProductsTable from "./components/ProductsTable";
 import { ProductContext } from "./contexts/ProductContext";
 
 function App() {
-  const { parsedData } = useContext(AuthContext);
+  //const { parsedData } = useContext(AuthContext);
   const { getCompanies, updateCompany, allCompanies } =
     useContext(CompanyContext);
   const { getProducts } = useContext(ProductContext);
   const navigate = useNavigate();
-  useEffect(() => {
+  /*useEffect(() => {
     if (Object.keys(parsedData).length !== 0) {
       getProducts();
       getCompanies();
     } else if (Object.keys(parsedData).length === 0) {
       navigate("/");
     }
+  }, []);*/
+  useEffect(() => {
+    getCompanies();
+    //getProducts();
   }, []);
   return (
     <div className="App">
@@ -32,7 +36,7 @@ function App() {
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/home-page/" element={<HomePage />}>
           <Route index={true} element={<CompaniesTable />} />
-          <Route path="/home-page/products" element={<ProductsTable />} />
+          <Route path="home-page/products" element={<ProductsTable />} />
         </Route>
       </Routes>
     </div>

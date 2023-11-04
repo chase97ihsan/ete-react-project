@@ -10,13 +10,13 @@ function Header() {
 
   return (
     <div className="header">
-      <NavLink to="/home-page" className="header-link">
+      <NavLink to="/home-page/" className="header-link">
         <h3>Home Page</h3>
       </NavLink>
-      <NavLink to="/home-page" className="header-link">
+      <NavLink to="/home-page/" className="header-link">
         <h3>Companies</h3>
       </NavLink>
-      <NavLink to="/home-page/products" className="header-link">
+      <NavLink to="home-page/products" className="header-link">
         <h3 style={{ padding: "0 15px 0 15px" }}>Products Of Companies</h3>
       </NavLink>
       <button

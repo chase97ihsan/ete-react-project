@@ -5,7 +5,7 @@ import { AuthContext } from "./AuthContext";
 
 export const CompanyContext = createContext();
 function CompanyContextProvider({ children }) {
-  const { token, email } = useContext(AuthContext);
+  const { token, parsedData, storedData } = useContext(AuthContext);
   const [allCompanies, setAllCompanies] = useState([]);
 
   const deleteCompany = (id) => {
@@ -43,10 +43,11 @@ function CompanyContextProvider({ children }) {
   };
 
   const getCompanies = () => {
+    console.log(storedData);
     axios
-      .get("http://localhost:9000/company/", {
+      .post("http://localhost:9000/company/", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: storedData.token,
         },
       })
       .then((res) => {
