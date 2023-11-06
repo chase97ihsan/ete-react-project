@@ -1,4 +1,4 @@
-let companiesdata;
+let companiesdata = require("./companiesData");
 
 const resetData = () => {
   companiesdata = [
@@ -85,5 +85,4 @@ module.exports = {
   deleteById,
   updateById,
   create,
-  companiesdata,
 };

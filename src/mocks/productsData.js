@@ -1,4 +1,4 @@
-let productsData;
+const productsData = require("./productsData");
 
 const resetData = () => {
   productsData = [
@@ -98,5 +98,4 @@ module.exports = {
   resetData,
   deleteById,
   updateById,
-  productsData,
 };
