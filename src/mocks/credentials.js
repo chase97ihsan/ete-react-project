@@ -25,10 +25,7 @@ const createToken = (n) => {
   return token;
 };
 
-const mockToken = "";
-
 module.exports = {
   users,
   createToken,
-  mockToken,
 };

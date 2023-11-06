@@ -27,10 +27,6 @@ function SignIn() {
       </div>
       <div className="form">
         <form className="signForm" onSubmit={handleSubmit(SubmitHandler)}>
-          <i
-            className="fa-brands fa-twitter fa-2xl"
-            style={{ color: "#2295ec", fontSize: "60px" }}
-          ></i>
           <h1 className="sign-h1">Create an acount</h1>
           <div className="sign-input">
             <label>
@@ -88,11 +84,11 @@ function SignIn() {
                   required: "Please enter you email address.",
                   minLength: {
                     value: 12,
-                    message: "Email address must be minimum 12 characters.",
+                    message: "Email must be minimum 12 characters.",
                   },
                   maxLength: {
                     value: 45,
-                    message: "Email address must be maximum 50 characters.",
+                    message: "Email  must be maximum 50 characters.",
                   },
                 })}
               />
@@ -111,11 +107,11 @@ function SignIn() {
                   required: "Please enter your password.",
                   minLength: {
                     value: 8,
-                    message: "User password must be minimum 8 characters.",
+                    message: "Password must be minimum 8 characters.",
                   },
                   maxLength: {
                     value: 50,
-                    message: "User password must be maximum 50 characters.",
+                    message: "Password must be maximum 50 characters.",
                   },
                 })}
               />

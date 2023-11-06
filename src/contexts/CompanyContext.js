@@ -1,24 +1,25 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 
 export const CompanyContext = createContext();
 function CompanyContextProvider({ children }) {
-  const { token, parsedData, storedData } = useContext(AuthContext);
   const [allCompanies, setAllCompanies] = useState([]);
+  const { parsedData } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  if (!parsedData) {
+    navigate("/");
+  }
 
   const deleteCompany = (id) => {
     console.log(id);
     axios
-      .delete(`http://localhost:9000/company/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .delete(`http://localhost:3000/company/${id}`)
       .then((res) => {
-        console.log("çalıştı");
         console.log(res.data);
+        getCompanies();
       })
       .catch((err) => {
         console.log(err);
@@ -26,16 +27,13 @@ function CompanyContextProvider({ children }) {
   };
 
   const updateCompany = (company) => {
+    const id = company.id;
     // console.log(company);
     axios
-      .put(`http://localhost:9000/company/update`, company, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .put(`http://localhost:3000/company/${id}`, company)
       .then((res) => {
         getCompanies();
-        //console.log(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -43,23 +41,26 @@ function CompanyContextProvider({ children }) {
   };
 
   const getCompanies = () => {
-    console.log(storedData);
     axios
-      .post("http://localhost:9000/company/", {
-        headers: {
-          Authorization: storedData.token,
-        },
-      })
+      .get("http://localhost:3000/company/")
       .then((res) => {
-        if (res.data.length !== 0) {
-          setAllCompanies(res.data.slice().reverse());
-          console.log(res.data);
-        } else if (res.data.length !== 0) {
-          console.log("There is no any company to show");
-        }
+        setAllCompanies(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(err);
+      });
+  };
+
+  const createCompany = (company) => {
+    axios
+      .post(`http://localhost:3000/company/create`, company)
+      .then((res) => {
+        getCompanies();
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -70,6 +71,7 @@ function CompanyContextProvider({ children }) {
         updateCompany,
         deleteCompany,
         allCompanies,
+        createCompany,
       }}
     >
       {children}

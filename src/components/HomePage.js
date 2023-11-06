@@ -1,41 +1,69 @@
 import { useContext, useEffect, useState } from "react";
 import { CompanyContext } from "../contexts/CompanyContext";
 import CompaniesTable from "./CompaniesTable";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import ProductsTable from "./ProductsTable";
 import { ProductContext } from "../contexts/ProductContext";
 import { AuthContext } from "../contexts/AuthContext";
+import CompanyUpdate from "./CompanyUpdate";
+import ProductUpdate from "./ProductUpdate";
+import MainPage from "./MainPage";
 
 function HomePage() {
-  const { getCompanies, updateCompany, deleteCompany, allCompanies } =
-    useContext(CompanyContext);
-  const { parsedData } = useContext(AuthContext);
-  const { getProducts, updateProduct, deleteProduct, allProducts } =
-    useContext(ProductContext);
-  const navigate = useNavigate();
-  /*useEffect(() => {
-    if (Object.keys(parsedData).length !== 0) {
-      getProducts();
-    } else if (Object.keys(parsedData).length === 0) {
-      navigate("/");
-    }
-  }, []);*/
-  useEffect(() => {
-    getCompanies();
-  }, []);
+  const { deleteCompany, allCompanies } = useContext(CompanyContext);
+
+  const { deleteProduct, allProducts } = useContext(ProductContext);
+
+  const [companyModal, setCompanyModal] = useState(false);
+  const [productModal, setProductModal] = useState(false);
+  const [companyId, setCompanyId] = useState(null);
+  const [productId, setProductId] = useState(null);
+  const [productCompanyId, setProductCompanyId] = useState(null);
+
+  const toggleCompanyModal = (id) => {
+    setCompanyId(id);
+    setCompanyModal(!companyModal);
+  };
+
+  const toggleProductModal = (id, companyId) => {
+    setProductId(id);
+    setProductCompanyId(companyId);
+    setProductModal(!productModal);
+  };
+
+  const closeModal = () => {
+    setCompanyModal(false);
+    setProductModal(false);
+  };
+
+  if (companyModal || productModal) {
+    document.body.classList.add("active-modal");
+  } else {
+    document.body.classList.remove("active-modal");
+  }
+
   return (
     <div className="container">
       <Header />
       <section>
+        {companyModal && <CompanyUpdate onClose={closeModal} id={companyId} />}
+        {productModal && (
+          <ProductUpdate
+            onClose={closeModal}
+            id={productId}
+            companyId={productCompanyId}
+          />
+        )}
         <Routes>
+          <Route index={true} element={<MainPage />} />
           <Route
-            index={true}
+            path="home-page/companies"
             element={
               <CompaniesTable
                 searchable={true}
                 head={[
-                  { name: "No" },
+                  { name: "Company ID", sortable: true },
                   { name: "Company-Name", sortable: true },
                   { name: "Legal-Number" },
                   { name: "Country" },
@@ -56,6 +84,7 @@ function HomePage() {
                       <button
                         key={`edit-${company.id}`}
                         className="action-button"
+                        onClick={() => toggleCompanyModal(company.id)}
                       >
                         Edit
                       </button>,
@@ -82,7 +111,7 @@ function HomePage() {
               <ProductsTable
                 searchable={true}
                 head={[
-                  { name: "No" },
+                  { name: "Product ID", sortable: true },
                   { name: "Product-Name", sortable: true },
                   { name: "Product-Category" },
                   { name: "Product-Amount" },
@@ -107,6 +136,9 @@ function HomePage() {
                       <button
                         key={`edit-${product.id}`}
                         className="action-button"
+                        onClick={() =>
+                          toggleProductModal(product.id, product.companyId)
+                        }
                       >
                         Edit
                       </button>,
@@ -116,7 +148,9 @@ function HomePage() {
                           deleteProduct(product.id);
                         }}
                         className="action-button"
-                        style={{ backgroundColor: " #ef4444" }}
+                        style={{
+                          backgroundColor: " #ef4444",
+                        }}
                       >
                         Delete
                       </button>,

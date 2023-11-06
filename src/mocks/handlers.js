@@ -3,64 +3,167 @@ import productsData from "./productsData";
 import { http, HttpResponse } from "msw";
 import credentials from "./credentials";
 
-function authenticator(re) {
-  const { Authorization } = re.headers;
-  const { mockToken } = credentials;
-
-  if (
-    Authorization === mockToken ||
-    localStorage.getItem("mockToken") === localStorage.getItem("token")
-  ) {
-    return true;
+function authenticator() {
+  const mockToken = localStorage.getItem("mockToken"); // => Sayfa render edilse dahi localStorage dan ulaşılabilen backToken.(Token eşleştirme için)
+  const decodedToken = atob(mockToken);
+  let userToken = JSON.parse(localStorage.getItem("Token")).token; // => Login olan userın Local storage de tuttuğu token değeri
+  if (decodedToken.length > 0 && userToken.length > 0) {
+    if (decodedToken === userToken) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return false;
   }
 }
 
-export const handlers = [
-  http.post("http://localhost:9000/auth/register", async ({ request }) => {
-    console.log(request);
-    let newUser = await request.json();
+function register(newUser) {
+  const existingMember = credentials.users.find(
+    (m) => m.email === newUser.email
+  );
+  if (existingMember === undefined) {
     newUser = {
       ["id"]: credentials.users.length + 1,
       ...newUser,
     };
     credentials.users.push(newUser);
+    return HttpResponse.json(true);
+  } else {
+    return new HttpResponse(null, {
+      status: 409,
+      statusText: "Incorrect email / password combination.",
+    });
+  }
+}
 
-    return HttpResponse.json(credentials.users);
+function logIn(validUser) {
+  let isValidUser = credentials.users.filter(
+    //Kullanıcı üye mi?
+    (u) => u.email === validUser.email && validUser.password === u.password
+  );
+  if (isValidUser && isValidUser.length > 0) {
+    const userToken = credentials.createToken(50); // Token yaratma
+    const encodedToken = btoa(userToken);
+    localStorage.setItem("mockToken", encodedToken);
+    return HttpResponse.json({ token: userToken });
+  } else {
+    return new HttpResponse(null, {
+      status: 401,
+      statusText: "Incorrect email / password combination.",
+    });
+  }
+}
+
+function logOut() {
+  if (localStorage.getItem("mockToken")) {
+    return localStorage.removeItem("mockToken");
+  }
+}
+
+export const handlers = [
+  http.post("http://localhost:3000/auth/register", async ({ request }) => {
+    let newUser = await request.json();
+    const response = await register(newUser);
+    return response;
   }),
 
-  http.post("http://localhost:9000/auth/login", async ({ request }) => {
+  http.post("http://localhost:3000/auth/login", async ({ request }) => {
     let newRequest = await request.json();
-    console.log(newRequest);
-    const userToken = credentials.createToken(50);
-    credentials.mockToken = userToken;
-    localStorage.setItem("mockToken", credentials.mockToken);
-    let validUser = credentials.users.filter(
-      (u) => u.email === newRequest.email && newRequest.password === u.password
-    );
+    const response = await logIn(newRequest);
+    return response;
+  }),
 
-    if (validUser.length > 0) {
-      return HttpResponse.json({ token: userToken });
+  http.post("http://localhost:3000/auth/logout", () => {
+    if (authenticator()) {
+      logOut();
+      return new HttpResponse(null, {
+        status: 200,
+        statusText: "Logout successful",
+      });
     } else {
       return new HttpResponse(null, {
         status: 401,
-        statusText: "Incorrect email / password combination.",
+        statusText: "Unauthorized",
       });
     }
   }),
-  // Intercept the "GET /resource" request.
-  http.post("http://localhost:9000/company/", ({ request }) => {
-    console.log(request);
 
+  http.get("http://localhost:3000/company/", () => {
     return HttpResponse.json(companiesData.getAll());
-
-    // And respond with a "text/plain" response
-    // with a "Hello world!" text response body.
   }),
-  http.get("http://localhost:9000/products/", () => {
-    // And respond with a "text/plain" response
-    // with a "Hello world!" text response body.
+
+  http.post("http://localhost:3000/company/create", async ({ request }) => {
+    let newRequest = await request.json();
+    if (authenticator()) {
+      return HttpResponse.json(companiesData.create(newRequest));
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
+  }),
+
+  http.delete("http://localhost:3000/company/:id", ({ params }) => {
+    if (authenticator()) {
+      return HttpResponse.json(companiesData.deleteById(params.id));
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
+  }),
+
+  http.put("http://localhost:3000/company/:id", async ({ request, params }) => {
+    let newRequest = await request.json();
+    if (authenticator()) {
+      return HttpResponse.json(companiesData.updateById(params.id, newRequest));
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
+  }),
+
+  http.get("http://localhost:3000/products/", () => {
     return HttpResponse.json(productsData.getAll());
+  }),
+
+  http.post("http://localhost:3000/product/create", async ({ request }) => {
+    let newRequest = await request.json();
+    if (authenticator()) {
+      return HttpResponse.json(productsData.create(newRequest));
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
+  }),
+
+  http.delete("http://localhost:3000/product/:id", ({ params }) => {
+    if (authenticator()) {
+      return HttpResponse.json(productsData.deleteById(params.id));
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
+  }),
+
+  http.put("http://localhost:3000/product/:id", async ({ request, params }) => {
+    let newRequest = await request.json();
+    if (authenticator()) {
+      return HttpResponse.json(productsData.updateById(params.id, newRequest));
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
   }),
 ];

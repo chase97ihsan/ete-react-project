@@ -71,8 +71,24 @@ const getById = (id) => {
   return productsData.find((d) => d.id === id);
 };
 
+const deleteById = (id) => {
+  productsData = productsData.filter((c) => c.id != id);
+  return productsData;
+};
+
+const updateById = (id, product) => {
+  if (id !== -1) {
+    productsData[id - 1] = product;
+  }
+  return productsData;
+};
+
 const create = (item) => {
-  return productsData.push(...item);
+  var id = productsData[productsData.length - 1].id + 1;
+  var key = "id";
+  item = Object.assign({ [key]: id }, item);
+  productsData.unshift(item);
+  return productsData;
 };
 
 module.exports = {
@@ -80,4 +96,6 @@ module.exports = {
   getById,
   create,
   resetData,
+  deleteById,
+  updateById,
 };

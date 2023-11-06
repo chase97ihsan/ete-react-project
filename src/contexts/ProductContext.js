@@ -1,22 +1,25 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 
 export const ProductContext = createContext();
 function ProductContextProvider({ children }) {
-  const { token, email } = useContext(AuthContext);
+  const { token, email, storedData, parsedData } = useContext(AuthContext);
   const [allProducts, setAllProducts] = useState([]);
 
+  const navigate = useNavigate();
+  if (!parsedData) {
+    navigate("/");
+  }
+
   const deleteProduct = (id) => {
+    console.log(id);
     axios
-      .delete(`http://localhost:9000/product/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .delete(`http://localhost:3000/product/${id}`)
       .then((res) => {
         console.log(res.data);
+        getProducts();
       })
       .catch((err) => {
         console.log(err);
@@ -24,16 +27,12 @@ function ProductContextProvider({ children }) {
   };
 
   const updateProduct = (product) => {
-    // console.log(product);
+    const id = product.id;
     axios
-      .put(`http://localhost:9000/product/update`, product, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .put(`http://localhost:3000/product/${id}`, product)
       .then((res) => {
         getProducts();
-        //console.log(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -42,23 +41,29 @@ function ProductContextProvider({ children }) {
 
   const getProducts = () => {
     axios
-      .get(
-        "http://localhost:9000/products/" /*, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }*/
-      )
+      .get("http://localhost:3000/products/")
       .then((res) => {
         if (res.data.length !== 0) {
-          setAllProducts(res.data.slice().reverse());
+          setAllProducts(res.data);
           console.log(res.data);
-        } else if (res.data.length !== 0) {
+        } else if (res.data.length === 0) {
           console.log("There is no any product to show");
         }
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(err);
+      });
+  };
+
+  const createProduct = (product) => {
+    axios
+      .post(`http://localhost:3000/product/create`, product)
+      .then((res) => {
+        getProducts();
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -69,6 +74,7 @@ function ProductContextProvider({ children }) {
         updateProduct,
         deleteProduct,
         allProducts,
+        createProduct,
       }}
     >
       {children}

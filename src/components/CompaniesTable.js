@@ -1,9 +1,13 @@
-import { useState } from "react";
+import useConfig from "antd/es/config-provider/hooks/useConfig";
+import { useContext, useState } from "react";
 import { FaSortDown, FaSortUp, FaSort } from "react-icons/fa";
+import { CompanyContext } from "../contexts/CompanyContext";
+import CompanyAdd from "./CompanyAdd";
 
 export default function CompaniesTable({ head, body, searchable }) {
   const [sorting, setSorting] = useState(false);
   const [search, setSearch] = useState("");
+  const [companyModal, setCompanyModal] = useState(false);
   const filteredData =
     body &&
     body
@@ -26,12 +30,35 @@ export default function CompaniesTable({ head, body, searchable }) {
         }
       });
 
-  if (!body || body?.length === 0) {
+  if (!body || body?.length === 0 || body == {}) {
     return <div className="empty-page">It's a empty</div>;
   }
 
+  function toggle() {
+    setCompanyModal(!companyModal);
+  }
+
+  const closeModal = () => {
+    setCompanyModal(false);
+  };
+
   return (
     <>
+      <button
+        className="create"
+        onClick={() => {
+          toggle();
+        }}
+      >
+        <h3>New Company</h3>{" "}
+        <div>
+          <i
+            className="fa-solid fa-circle-plus fa-2xl"
+            style={{ marginTop: "23px" }}
+          ></i>
+        </div>
+      </button>
+      {companyModal && <CompanyAdd onClose={closeModal} />}
       {searchable && (
         <div className="search">
           <input
@@ -70,11 +97,11 @@ export default function CompaniesTable({ head, body, searchable }) {
                       >
                         {sorting?.key === key &&
                           (sorting.orderBy === "asc" ? (
-                            <FaSortDown size={14} />
+                            <FaSortDown size={9} />
                           ) : (
-                            <FaSortUp size={14} />
+                            <FaSortUp size={9} />
                           ))}
-                        {sorting?.key !== key && <FaSort size={14} />}
+                        {sorting?.key !== key && <FaSort size={12} />}
                       </button>
                     )}
                   </div>

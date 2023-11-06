@@ -57,8 +57,23 @@ const getById = (id) => {
   return companiesdata.find((d) => d.id === id);
 };
 
+const deleteById = (id) => {
+  companiesdata = companiesdata.filter((c) => c.id != id);
+  return companiesdata;
+};
+
 const create = (item) => {
-  companiesdata.push(...item);
+  var id = companiesdata[companiesdata.length - 1].id + 1;
+  var key = "id";
+  item = Object.assign({ [key]: id }, item);
+  companiesdata.unshift(item);
+  return companiesdata;
+};
+
+const updateById = (id, company) => {
+  if (id !== -1) {
+    companiesdata[id - 1] = company;
+  }
   return companiesdata;
 };
 
@@ -67,4 +82,7 @@ module.exports = {
   getById,
   create,
   resetData,
+  deleteById,
+  updateById,
+  create,
 };

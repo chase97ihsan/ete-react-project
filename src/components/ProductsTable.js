@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { FaSortDown, FaSortUp, FaSort } from "react-icons/fa";
 import { ProductContext } from "../contexts/ProductContext";
+import ProductAdd from "./ProductAdd";
 
 export default function ProductsTable({ head, body, searchable }) {
   const [sorting, setSorting] = useState(false);
   const [search, setSearch] = useState("");
+  const [productModal, setProductModal] = useState(false);
 
   const filteredData =
     body &&
@@ -28,12 +30,36 @@ export default function ProductsTable({ head, body, searchable }) {
         }
       });
 
-  if (!body || body?.length === 0) {
+  if (!body || body?.length === 0 || body == {}) {
     return <div className="empty-page">It's a empty</div>;
   }
 
+  function toggle() {
+    setProductModal(!productModal);
+  }
+
+  const closeModal = () => {
+    setProductModal(false);
+  };
+
   return (
     <>
+      <button
+        className="create"
+        onClick={() => {
+          toggle();
+        }}
+      >
+        <h3>New Product</h3>{" "}
+        <div>
+          <i
+            className="fa-solid fa-circle-plus fa-2xl"
+            style={{ marginTop: "23px" }}
+          ></i>
+        </div>
+      </button>
+      {productModal && <ProductAdd onClose={closeModal} />}
+
       {searchable && (
         <div className="search">
           <input

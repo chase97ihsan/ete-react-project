@@ -11,28 +11,30 @@ function Header() {
   return (
     <div className="header">
       <NavLink to="/home-page/" className="header-link">
-        <h3>Home Page</h3>
+        <h2>HOME PAGE</h2>
       </NavLink>
-      <NavLink to="/home-page/" className="header-link">
-        <h3>Companies</h3>
+      <NavLink to="home-page/companies" className="header-link">
+        <h2>COMPANIES</h2>
       </NavLink>
       <NavLink to="home-page/products" className="header-link">
-        <h3 style={{ padding: "0 15px 0 15px" }}>Products Of Companies</h3>
+        <h2>PRODUCTS</h2>
       </NavLink>
       <button
-        className="header-link"
+        className="header-link logOut"
         type="button"
         style={{
           fontWeight: "bolder",
-          fontSize: "27px",
-          color: "  #093267b3",
-          backgroundColor: "#77baee",
+          fontSize: "24px",
+          color: "navy",
+          backgroundColor: "white",
+          paddingBottom: "41px",
+          borderRadius: "15px",
         }}
         onClick={() => {
           handle();
         }}
       >
-        Log out
+        <h2 style={{ marginTop: "73px" }}>LOG OUT</h2>
       </button>
     </div>
   );

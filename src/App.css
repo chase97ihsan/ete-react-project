@@ -116,6 +116,7 @@
   border-radius: 4px;
   background-color: #3b82f6;
   color: #fff;
+  cursor: pointer;
 }
 .empty-page {
   padding: 16px;
@@ -140,7 +141,7 @@
   border-color: #ccc;
 }
 .table {
-  width: 100%;
+  max-width: 1000px;
   border: 1px solid #000;
   border-radius: 4px;
   padding: 4px;
@@ -179,8 +180,7 @@
 /* Header ; */
 
 .header-link {
-  min-width: 170px;
-  width: auto;
+  min-width: 200px;
   height: 40px;
   border-radius: 76px;
   background-color: #276bc4;
@@ -191,15 +191,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 15px;
+  position: relative;
+}
+.header-link h2 {
+  padding: 0 15px 15px 15px;
 }
 .header {
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
-  margin-bottom: 100px;
+  margin-bottom: 60px;
+  background-color: rgba(224, 224, 232, 0.842);
+  border-radius: 5px;
+  padding: 40px;
 }
 
-/* Container*/
+.header-link h2:hover {
+  color: rgb(0, 0, 84);
+  font-size: 30px;
+}
+
+/* rgba(224, 224, 232, 0.842);*/
 
 .container {
   margin: 0 auto;
@@ -209,4 +222,112 @@
   margin-left: 20px;
   width: 120px;
   text-align: start;
+}
+
+body.active-modal {
+  overflow-y: hidden;
+}
+
+.btn-modal {
+  padding: 10px 20px;
+  display: block;
+  margin: 100px auto 0;
+  font-size: 18px;
+}
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+}
+
+.overlay {
+  background: rgba(49, 49, 49, 0.8);
+}
+.modal-content {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1.4;
+  background: #f1f1f1;
+  padding: 14px 28px;
+  border-radius: 3px;
+  max-width: 600px;
+  min-width: 300px;
+  margin-top: 20px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 7px;
+}
+
+.modal-input {
+  margin: 15px;
+}
+
+.create {
+  margin-right: 1000px;
+  margin-bottom: 30px;
+  min-width: 155px;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.create:hover {
+  background-color: blue;
+  font-weight: 900;
+  color: #411e1e;
+}
+
+.create:hover i {
+  color: white;
+}
+.create:hover h3 {
+  color: white;
+}
+
+/* MainPage Companent*/
+.main {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1000px;
+  height: auto;
+  min-height: 300px;
+  border: 1px solid black;
+  margin-top: 50px;
+}
+
+.main-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 200px;
+  height: auto;
+}
+
+.main-box {
+  width: 230px;
+  min-height: 250px;
+  height: auto;
+  border: 10px solid grey;
+  margin-bottom: 45px;
+}
+
+.main ul {
+  text-align: left;
+}
+
+.main ul li {
+  margin-bottom: 15px;
 }
