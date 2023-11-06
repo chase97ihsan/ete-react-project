@@ -85,4 +85,5 @@ module.exports = {
   deleteById,
   updateById,
   create,
+  companiesdata,
 };

@@ -98,4 +98,5 @@ module.exports = {
   resetData,
   deleteById,
   updateById,
+  productsData,
 };
