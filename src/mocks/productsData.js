@@ -1,4 +1,4 @@
-const productsData = require("./productsData");
+let productsData;
 
 const resetData = () => {
   productsData = [
@@ -87,7 +87,7 @@ const create = (item) => {
   var id = productsData[productsData.length - 1].id + 1;
   var key = "id";
   item = Object.assign({ [key]: id }, item);
-  productsData.unshift(item);
+  productsData.push(item);
   return productsData;
 };
 

@@ -1,4 +1,4 @@
-let companiesdata = require("./companiesData");
+let companiesdata;
 
 const resetData = () => {
   companiesdata = [
@@ -66,7 +66,7 @@ const create = (item) => {
   var id = companiesdata[companiesdata.length - 1].id + 1;
   var key = "id";
   item = Object.assign({ [key]: id }, item);
-  companiesdata.unshift(item);
+  companiesdata.push(item);
   return companiesdata;
 };
 
