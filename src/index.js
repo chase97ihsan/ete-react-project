@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import AuthContextProvider from "./contexts/AuthContext";
 import CompanyContextProvider from "./contexts/CompanyContext";
 import ProductContextProvider from "./contexts/ProductContext";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 /*if (process.env.NODE_ENV === "development") {
   const { worker } = import("./mocks/browser");

@@ -1,3 +1,5 @@
+import productsData from "./productsData";
+
 let companiesdata;
 
 const resetData = () => {
@@ -14,7 +16,7 @@ const resetData = () => {
       name: "Tesla",
       legalNumber: "US 14 96 88 22",
       country: "United States",
-      website: "https://www.tesla.com/",
+      website: "https://www.tesla.com/tr_tr",
     },
     {
       id: 3,
@@ -44,12 +46,19 @@ const resetData = () => {
       country: "Türkiye",
       website: "https://baykartech.com/tr/",
     },
+    {
+      id: 7,
+      name: "Renault",
+      legalNumber: "FR 26 11 48 29",
+      country: "France",
+      website: "https://www.renault.com.tr/",
+    },
   ];
 };
 
 resetData();
 
-const getAll = () => {
+const getAllCompanies = () => {
   return companiesdata;
 };
 
@@ -59,30 +68,38 @@ const getById = (id) => {
 
 const deleteById = (id) => {
   companiesdata = companiesdata.filter((c) => c.id != id);
+  productsData.deleteByCompanyId(id);
   return companiesdata;
 };
 
 const create = (item) => {
-  var id = companiesdata[companiesdata.length - 1].id + 1;
   var key = "id";
+  var id;
+  if (companiesdata.length === 0) {
+    id = 1;
+  } else {
+    id = companiesdata[companiesdata.length - 1].id + 1;
+  }
+
   item = Object.assign({ [key]: id }, item);
   companiesdata.push(item);
   return companiesdata;
 };
 
 const updateById = (id, company) => {
-  if (id !== -1) {
-    companiesdata[id - 1] = company;
+  const index = companiesdata.findIndex((e) => e.id == id);
+
+  if (index !== -1) {
+    companiesdata[index] = company;
   }
   return companiesdata;
 };
 
-module.exports = {
-  getAll,
+export default {
+  getAllCompanies,
   getById,
   create,
   resetData,
   deleteById,
   updateById,
-  create,
 };

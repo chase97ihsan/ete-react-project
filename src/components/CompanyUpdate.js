@@ -1,105 +1,89 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CompanyContext } from "../contexts/CompanyContext";
 
-export default function CompanyUpdate({ onClose, id }) {
+export default function CompanyUpdate({ id }) {
+  const { updateCompany } = useContext(CompanyContext);
+  const { allCompanies } = useContext(CompanyContext);
+  const getCompany = allCompanies.find((p) => p.id === id) || {};
+
   const {
     register,
     handleSubmit,
     formState: { isValid },
+    setValue,
   } = useForm({
     mode: "onChange",
-    defaultValues: {
-      id: id,
-      name: "",
-      legalNumber: "",
-      country: "",
-      website: "",
-    },
   });
-
-  const { updateCompany } = useContext(CompanyContext);
-  const { allCompanies } = useContext(CompanyContext);
-  const getCompany = allCompanies.find((p) => p.id === id);
 
   function SubmitHandler(formData) {
     updateCompany(formData);
-    onClose();
+    console.log(id);
   }
-
-  const toggleModal = () => {
-    onClose();
-  };
-
+  useEffect(() => {
+    // id değiştiğinde defaultValues objesini güncelleyin
+    setValue("id", id);
+    setValue("name", getCompany.name);
+    setValue("legalNumber", getCompany.legalNumber);
+    setValue("country", getCompany.country);
+    setValue("website", getCompany.website);
+  }, [id]);
   return (
     <>
-      <div className="modal">
-        <div className="overlay"></div>
-        <div className="modal-content">
-          <form onSubmit={handleSubmit(SubmitHandler)}>
-            <div>
-              <h1 className="sign-h1">Edit company information</h1>
-              <div className="sign-input modal-input ">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={getCompany.name}
-                    {...register("name", {
-                      required: "Please enter your password.",
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={getCompany.legalNumber}
-                    {...register("legalNumber", {
-                      required: "Please enter your password.",
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={getCompany.country}
-                    {...register("country")}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={getCompany.website}
-                    {...register("website")}
-                  />
-                </label>
-              </div>
-              <div>
-                <button
-                  className="sign-button"
-                  type="submit"
-                  disabled={!isValid}
-                  style={{ fontSize: "20px" }}
-                >
-                  SAVE
-                </button>
-              </div>
-            </div>
-          </form>
-          <button className="close-modal" onClick={toggleModal}>
-            CLOSE
-          </button>
+      <form onSubmit={handleSubmit(SubmitHandler)}>
+        <div>
+          <label>
+            <input
+              className="form-control mb-3 mt-2 "
+              style={{ width: "300px" }}
+              type="text"
+              {...register("name")}
+            />
+          </label>
+
+          <div>
+            <label>
+              <input
+                className="form-control  mb-3"
+                style={{ width: "300px" }}
+                type="text"
+                {...register("legalNumber")}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                className="form-control mb-3"
+                style={{ width: "300px" }}
+                type="text"
+                {...register("country")}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                className="form-control mb-3"
+                style={{ width: "300px" }}
+                type="text"
+                {...register("website")}
+              />
+            </label>
+          </div>
+          <div>
+            <button
+              className="btn btn-primary p-5 pb-1 pt-1 mb-2"
+              data-bs-dismiss="modal"
+              type="submit"
+              disabled={!isValid}
+              style={{ fontSize: "20px" }}
+            >
+              EDIT
+            </button>
+          </div>
         </div>
-      </div>
+      </form>
     </>
   );
 }

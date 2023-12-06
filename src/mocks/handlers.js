@@ -42,15 +42,16 @@ function logIn(validUser) {
     //Kullanıcı üye mi?
     (u) => u.email === validUser.email && validUser.password === u.password
   );
+
   if (isValidUser && isValidUser.length > 0) {
     const userToken = credentials.createToken(50); // Token yaratma
     const encodedToken = btoa(userToken);
     localStorage.setItem("mockToken", encodedToken);
     return HttpResponse.json({ token: userToken });
-  } else {
+  } else if (isValidUser && isValidUser.length == 0) {
     return new HttpResponse(null, {
       status: 401,
-      statusText: "Incorrect email / password combination.",
+      statusText: "Unregistered user Incorrect email / password combination.",
     });
   }
 }
@@ -90,7 +91,14 @@ export const handlers = [
   }),
 
   http.get("http://localhost:3000/company/", () => {
-    return HttpResponse.json(companiesData.getAll());
+    if (authenticator()) {
+      return HttpResponse.json(companiesData.getAllCompanies());
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
   }),
 
   http.post("http://localhost:3000/company/create", async ({ request }) => {
@@ -129,7 +137,14 @@ export const handlers = [
   }),
 
   http.get("http://localhost:3000/products/", () => {
-    return HttpResponse.json(productsData.getAll());
+    if (authenticator()) {
+      return HttpResponse.json(productsData.getAll());
+    } else {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Unauthorized",
+      });
+    }
   }),
 
   http.post("http://localhost:3000/product/create", async ({ request }) => {

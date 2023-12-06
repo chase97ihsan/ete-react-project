@@ -2,6 +2,7 @@ import { children, createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useLocalStorage from "../hooks/UseLocalStorage";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 function AuthContextProvider({ children }) {
@@ -12,11 +13,6 @@ function AuthContextProvider({ children }) {
   let token;
 
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!storedData) {
-      navigate("/");
-    }
-  }, [parsedData]);
 
   const logIn = (credentials) => {
     axios
@@ -27,11 +23,15 @@ function AuthContextProvider({ children }) {
           const expirationTime = new Date().getTime() + 3 * 60 * 60 * 1000; //*** Token'a süre uygulama :  3 saatlik süre
           localStorage.setItem("tokenExpiration", expirationTime);
           navigate("/home-page/");
+          toast.success("Successfully logged in!");
         } else {
           console.log(res.data);
         }
       })
       .catch((err) => {
+        toast.error("Incorrect user credentials!", {
+          position: "top-center",
+        });
         console.log(err);
       });
   };
@@ -49,9 +49,10 @@ function AuthContextProvider({ children }) {
     axios
       .post("http://localhost:3000/auth/logout")
       .then((res) => {
-        navigate("/logIn");
         localStorage.removeItem("Token");
         localStorage.removeItem("tokenExpiration");
+        navigate("/logIn");
+        toast.successful("Successfully logged out!");
       })
       .catch((err) => {
         console.log(err);
@@ -63,14 +64,17 @@ function AuthContextProvider({ children }) {
       .then((res) => {
         if (res.data === true) {
           navigate("/logIn");
+          toast.success("Successfully registered!", {
+            position: "top-center",
+          });
         } else {
           console.log(res.data);
         }
       })
       .catch((error) => {
-        if (error.response.status === 409) {
-          console.log("oldu");
-        }
+        toast.warning("This user is already registered!", {
+          position: "top-right",
+        });
       });
   };
   return (

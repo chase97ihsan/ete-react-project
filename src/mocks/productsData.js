@@ -1,46 +1,47 @@
-let productsData;
+import companiesData from "./companiesData";
 
+let productsData;
 const resetData = () => {
   productsData = [
     {
       id: 1,
       companyId: 1,
       name: "Amg",
-      category: "Vehicle",
+      category: "Car",
       amount: 30000,
-      amountUnit: "Piece",
+      companyName: "Mercedes",
     },
     {
       id: 2,
       companyId: 2,
       name: "Model T",
-      category: "Vehicle",
+      category: "Car  (Electric)",
       amount: 70000,
-      amountUnit: "Piece",
+      companyName: "Tesla",
     },
     {
       id: 3,
       companyId: 3,
       name: "Anadolu",
-      category: "Vehicle",
+      category: "Car  (Electric)",
       amount: 15000,
-      amountUnit: "Piece",
+      companyName: "Togg",
     },
     {
       id: 4,
       companyId: 4,
       name: "Mountain Bike",
-      category: "Light vehicle",
+      category: "Bicycle",
       amount: "8000",
-      amountUnit: "Piece",
+      companyName: "Bianchi",
     },
     {
       id: 5,
       companyId: 5,
       name: "Mustang",
-      category: "Vehicle",
-      amount: "5500",
-      amountUnit: "Piece",
+      category: "Car",
+      amount: "38000",
+      companyName: "Ford",
     },
     {
       id: 6,
@@ -48,7 +49,7 @@ const resetData = () => {
       name: "Akıncı",
       category: "Military vehicle",
       amount: "85",
-      amountUnit: "Piece",
+      companyName: "Bayraktar",
     },
     {
       id: 7,
@@ -56,7 +57,15 @@ const resetData = () => {
       name: "Kızıl Elma",
       category: "Military vehicle",
       amount: "1",
-      amountUnit: "Piece",
+      companyName: "Bayraktar",
+    },
+    {
+      id: 8,
+      companyId: 7,
+      name: "Clio E-tech",
+      category: "Car (hybrid)",
+      amount: "55000",
+      companyName: "Renault",
     },
   ];
 };
@@ -76,26 +85,55 @@ const deleteById = (id) => {
   return productsData;
 };
 
+const deleteByCompanyId = (id) => {
+  productsData = productsData.filter((c) => c.companyId != id);
+  console.log(productsData);
+  return productsData;
+};
+
 const updateById = (id, product) => {
-  if (id !== -1) {
-    productsData[id - 1] = product;
+  const index = productsData.findIndex((e) => e.id == id);
+  if (index !== -1) {
+    productsData[index] = product;
   }
   return productsData;
 };
 
+const findCompany = (item) => {
+  var company;
+  var companyName;
+  company = companiesData
+    .getAllCompanies()
+    .find((c) => c.id == Number(item.companyId));
+  if (company == undefined || company == null) {
+    companyName = "No Company";
+  } else {
+    companyName = company.name;
+  }
+
+  return companyName;
+};
+
 const create = (item) => {
-  var id = productsData[productsData.length - 1].id + 1;
   var key = "id";
+  var id;
+  if (productsData.length === 0) {
+    id = 1;
+  } else {
+    id = productsData[productsData.length - 1].id + 1;
+  }
+  item.companyName = findCompany(item);
   item = Object.assign({ [key]: id }, item);
   productsData.push(item);
   return productsData;
 };
 
-module.exports = {
+export default {
   getAll,
   getById,
   create,
   resetData,
   deleteById,
   updateById,
+  deleteByCompanyId,
 };

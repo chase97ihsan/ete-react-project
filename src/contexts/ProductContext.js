@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
+import { toast } from "react-toastify";
 
 export const ProductContext = createContext();
 function ProductContextProvider({ children }) {
@@ -14,12 +15,14 @@ function ProductContextProvider({ children }) {
   }
 
   const deleteProduct = (id) => {
-    console.log(id);
     axios
       .delete(`http://localhost:3000/product/${id}`)
       .then((res) => {
         console.log(res.data);
         getProducts();
+        toast.success("Deleted successfully!", {
+          position: "top-left",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -32,7 +35,9 @@ function ProductContextProvider({ children }) {
       .put(`http://localhost:3000/product/${id}`, product)
       .then((res) => {
         getProducts();
-        console.log(res.data);
+        toast.success("Edited successfully!", {
+          position: "top-left",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -43,15 +48,11 @@ function ProductContextProvider({ children }) {
     axios
       .get("http://localhost:3000/products/")
       .then((res) => {
-        if (res.data.length !== 0) {
-          setAllProducts(res.data);
-          console.log(res.data);
-        } else if (res.data.length === 0) {
-          console.log("There is no any product to show");
-        }
+        setAllProducts(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Unauthorized" + ":" + err);
+        navigate("/logIn");
       });
   };
 
@@ -60,7 +61,9 @@ function ProductContextProvider({ children }) {
       .post(`http://localhost:3000/product/create`, product)
       .then((res) => {
         getProducts();
-        console.log(res.data);
+        toast.success("Added successfully!", {
+          position: "top-left",
+        });
       })
       .catch((err) => {
         console.log(err);

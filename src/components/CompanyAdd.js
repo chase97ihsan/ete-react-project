@@ -2,11 +2,12 @@ import { useContext } from "react";
 import { CompanyContext } from "../contexts/CompanyContext";
 import { useForm } from "react-hook-form";
 
-export default function CompanyAdd({ onClose }) {
+export default function CompanyAdd() {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -21,82 +22,70 @@ export default function CompanyAdd({ onClose }) {
 
   function SubmitHandler(formData) {
     createCompany(formData);
-    onClose();
+    reset();
   }
-
-  const toggleModal = () => {
-    onClose();
-  };
 
   return (
     <>
-      <div className="modal">
-        <div className="overlay"></div>
-        <div className="modal-content">
-          <form onSubmit={handleSubmit(SubmitHandler)}>
-            <div>
-              <h1 className="sign-h1">Add a new company</h1>
-              <div className="sign-input modal-input ">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Company name"}
-                    {...register("name", {
-                      required: ".",
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Legal number"}
-                    {...register("legalNumber", {
-                      required: "",
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Country"}
-                    {...register("country")}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Website"}
-                    {...register("website")}
-                  />
-                </label>
-              </div>
-              <div>
-                <button
-                  className="sign-button"
-                  type="submit"
-                  disabled={!isValid}
-                  style={{ fontSize: "20px" }}
-                >
-                  SAVE
-                </button>
-              </div>
-            </div>
-          </form>
-          <button className="close-modal" onClick={toggleModal}>
-            CLOSE
+      <form onSubmit={handleSubmit(SubmitHandler)}>
+        <label>
+          <input
+            className="form-control mb-3 mt-2 "
+            style={{ width: "300px" }}
+            type="text"
+            placeholder={"Company name"}
+            {...register("name", {
+              required: ".",
+            })}
+          />
+        </label>
+        <div>
+          <label>
+            <input
+              className="form-control  mb-3"
+              style={{ width: "300px" }}
+              type="text"
+              placeholder={"Legal number"}
+              {...register("legalNumber", {
+                required: "",
+              })}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              className="form-control  mb-3"
+              style={{ width: "300px" }}
+              type="text"
+              placeholder={"Country"}
+              {...register("country")}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              className="form-control  mb-3"
+              style={{ width: "300px" }}
+              type="text"
+              placeholder={"Website"}
+              {...register("website")}
+            />
+          </label>
+        </div>
+        <div>
+          <button
+            className="btn btn-success  p-5 pb-1 pt-1 mb-2"
+            data-bs-dismiss="modal"
+            type="submit"
+            disabled={!isValid}
+            style={{ fontSize: "20px" }}
+          >
+            SAVE
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 }

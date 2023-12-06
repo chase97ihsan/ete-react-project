@@ -2,11 +2,12 @@ import { useContext } from "react";
 import { ProductContext } from "../contexts/ProductContext";
 import { useForm } from "react-hook-form";
 
-export default function ProductAdd({ onClose }) {
+export default function ProductAdd() {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -14,7 +15,7 @@ export default function ProductAdd({ onClose }) {
       companyId: "",
       category: "",
       amount: "",
-      amountUnit: "",
+      companyName: "",
     },
   });
 
@@ -22,92 +23,72 @@ export default function ProductAdd({ onClose }) {
 
   function SubmitHandler(formData) {
     createProduct(formData);
-    onClose();
+    reset();
   }
-
-  const toggleModal = () => {
-    onClose();
-  };
 
   return (
     <>
-      <div className="modal">
-        <div className="overlay"></div>
-        <div className="modal-content">
-          <form onSubmit={handleSubmit(SubmitHandler)}>
-            <div>
-              <h1 className="sign-h1">Add a new product</h1>
-              <div className="sign-input modal-input ">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Product name"}
-                    {...register("name", {
-                      required: ".",
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Company ID"}
-                    {...register("companyId", {
-                      required: ".",
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Category"}
-                    {...register("category")}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Amount"}
-                    {...register("amount")}
-                  />
-                </label>
-              </div>
-              <div className="sign-input modal-input">
-                <label>
-                  <input
-                    className="sign-input"
-                    type="text"
-                    placeholder={"Amount Unit"}
-                    {...register("amountUnit")}
-                  />
-                </label>
-              </div>
-              <div>
-                <button
-                  className="sign-button"
-                  type="submit"
-                  disabled={!isValid}
-                  style={{ fontSize: "20px" }}
-                >
-                  SAVE
-                </button>
-              </div>
-            </div>
-          </form>
-          <button className="close-modal" onClick={toggleModal}>
-            CLOSE
+      <form onSubmit={handleSubmit(SubmitHandler)}>
+        <div>
+          <label>
+            <input
+              className="form-control mt-2 mb-3"
+              style={{ width: "300px" }}
+              type="text"
+              placeholder={"Product name"}
+              {...register("name", {
+                required: ".",
+              })}
+            />
+          </label>
+        </div>
+
+        <label>
+          <input
+            className="form-control  mb-3"
+            style={{ width: "300px" }}
+            type="text"
+            placeholder={"Company ID"}
+            {...register("companyId", {
+              required: ".",
+            })}
+          />
+        </label>
+
+        <div>
+          <label>
+            <input
+              className="form-control  mb-3"
+              style={{ width: "300px" }}
+              type="text"
+              placeholder={"Category"}
+              {...register("category")}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              className="form-control  mb-3"
+              style={{ width: "300px" }}
+              type="text"
+              placeholder={"Amount"}
+              {...register("amount")}
+            />
+          </label>
+        </div>
+        <div>
+          <button
+            className="btn btn-success p-5 pb-1 pt-1 mb-2"
+            data-bs-dismiss="modal"
+            type="submit"
+            disabled={!isValid}
+            style={{ fontSize: "20px" }}
+          >
+            SAVE
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 }
