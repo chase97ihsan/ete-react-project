@@ -16,7 +16,7 @@ function CompanyContextProvider({ children }) {
 
   const deleteCompany = (id) => {
     axios
-      .delete(`http://localhost:3000/company/${id}`)
+      .delete(`https://ete-react-project.vercel.app/company/${id}`)
       .then((res) => {
         getCompanies();
         toast.success("Deleted successfully!", {
@@ -31,7 +31,7 @@ function CompanyContextProvider({ children }) {
   const updateCompany = (company) => {
     const id = company.id;
     axios
-      .put(`http://localhost:3000/company/${id}`, company)
+      .put(`https://ete-react-project.vercel.app/company/${id}`, company)
       .then((res) => {
         getCompanies();
         toast.success("Edited successfully!", {
@@ -45,7 +45,7 @@ function CompanyContextProvider({ children }) {
 
   const getCompanies = () => {
     axios
-      .get("http://localhost:3000/company/")
+      .get("https://ete-react-project.vercel.app/company/")
       .then((res) => {
         setAllCompanies(res.data);
       })
@@ -57,7 +57,7 @@ function CompanyContextProvider({ children }) {
 
   const createCompany = (company) => {
     axios
-      .post(`http://localhost:3000/company/create`, company)
+      .post(`https://ete-react-project.vercel.app/company/create`, company)
       .then((res) => {
         getCompanies();
         toast.success("Added successfully!", {

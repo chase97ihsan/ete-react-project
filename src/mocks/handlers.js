@@ -63,19 +63,25 @@ function logOut() {
 }
 
 export const handlers = [
-  http.post("http://localhost:3000/auth/register", async ({ request }) => {
-    let newUser = await request.json();
-    const response = await register(newUser);
-    return response;
-  }),
+  http.post(
+    "https://ete-react-project.vercel.app/auth/register",
+    async ({ request }) => {
+      let newUser = await request.json();
+      const response = await register(newUser);
+      return response;
+    }
+  ),
 
-  http.post("http://localhost:3000/auth/login", async ({ request }) => {
-    let newRequest = await request.json();
-    const response = await logIn(newRequest);
-    return response;
-  }),
+  http.post(
+    "https://ete-react-project.vercel.app/auth/login",
+    async ({ request }) => {
+      let newRequest = await request.json();
+      const response = await logIn(newRequest);
+      return response;
+    }
+  ),
 
-  http.post("http://localhost:3000/auth/logout", () => {
+  http.post("https://ete-react-project.vercel.app/auth/logout", () => {
     if (authenticator()) {
       logOut();
       return new HttpResponse(null, {
@@ -90,7 +96,7 @@ export const handlers = [
     }
   }),
 
-  http.get("http://localhost:3000/company/", () => {
+  http.get("https://ete-react-project.vercel.app/company/", () => {
     if (authenticator()) {
       return HttpResponse.json(companiesData.getAllCompanies());
     } else {
@@ -101,42 +107,53 @@ export const handlers = [
     }
   }),
 
-  http.post("http://localhost:3000/company/create", async ({ request }) => {
-    let newRequest = await request.json();
-    if (authenticator()) {
-      return HttpResponse.json(companiesData.create(newRequest));
-    } else {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: "Unauthorized",
-      });
+  http.post(
+    "https://ete-react-project.vercel.app/company/create",
+    async ({ request }) => {
+      let newRequest = await request.json();
+      if (authenticator()) {
+        return HttpResponse.json(companiesData.create(newRequest));
+      } else {
+        return new HttpResponse(null, {
+          status: 401,
+          statusText: "Unauthorized",
+        });
+      }
     }
-  }),
+  ),
 
-  http.delete("http://localhost:3000/company/:id", ({ params }) => {
-    if (authenticator()) {
-      return HttpResponse.json(companiesData.deleteById(params.id));
-    } else {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: "Unauthorized",
-      });
+  http.delete(
+    "https://ete-react-project.vercel.app/company/:id",
+    ({ params }) => {
+      if (authenticator()) {
+        return HttpResponse.json(companiesData.deleteById(params.id));
+      } else {
+        return new HttpResponse(null, {
+          status: 401,
+          statusText: "Unauthorized",
+        });
+      }
     }
-  }),
+  ),
 
-  http.put("http://localhost:3000/company/:id", async ({ request, params }) => {
-    let newRequest = await request.json();
-    if (authenticator()) {
-      return HttpResponse.json(companiesData.updateById(params.id, newRequest));
-    } else {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: "Unauthorized",
-      });
+  http.put(
+    "https://ete-react-project.vercel.app/company/:id",
+    async ({ request, params }) => {
+      let newRequest = await request.json();
+      if (authenticator()) {
+        return HttpResponse.json(
+          companiesData.updateById(params.id, newRequest)
+        );
+      } else {
+        return new HttpResponse(null, {
+          status: 401,
+          statusText: "Unauthorized",
+        });
+      }
     }
-  }),
+  ),
 
-  http.get("http://localhost:3000/products/", () => {
+  http.get("https://ete-react-project.vercel.app/products/", () => {
     if (authenticator()) {
       return HttpResponse.json(productsData.getAll());
     } else {
@@ -147,38 +164,49 @@ export const handlers = [
     }
   }),
 
-  http.post("http://localhost:3000/product/create", async ({ request }) => {
-    let newRequest = await request.json();
-    if (authenticator()) {
-      return HttpResponse.json(productsData.create(newRequest));
-    } else {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: "Unauthorized",
-      });
+  http.post(
+    "https://ete-react-project.vercel.app/product/create",
+    async ({ request }) => {
+      let newRequest = await request.json();
+      if (authenticator()) {
+        return HttpResponse.json(productsData.create(newRequest));
+      } else {
+        return new HttpResponse(null, {
+          status: 401,
+          statusText: "Unauthorized",
+        });
+      }
     }
-  }),
+  ),
 
-  http.delete("http://localhost:3000/product/:id", ({ params }) => {
-    if (authenticator()) {
-      return HttpResponse.json(productsData.deleteById(params.id));
-    } else {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: "Unauthorized",
-      });
+  http.delete(
+    "https://ete-react-project.vercel.app/product/:id",
+    ({ params }) => {
+      if (authenticator()) {
+        return HttpResponse.json(productsData.deleteById(params.id));
+      } else {
+        return new HttpResponse(null, {
+          status: 401,
+          statusText: "Unauthorized",
+        });
+      }
     }
-  }),
+  ),
 
-  http.put("http://localhost:3000/product/:id", async ({ request, params }) => {
-    let newRequest = await request.json();
-    if (authenticator()) {
-      return HttpResponse.json(productsData.updateById(params.id, newRequest));
-    } else {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: "Unauthorized",
-      });
+  http.put(
+    "https://ete-react-project.vercel.app/product/:id",
+    async ({ request, params }) => {
+      let newRequest = await request.json();
+      if (authenticator()) {
+        return HttpResponse.json(
+          productsData.updateById(params.id, newRequest)
+        );
+      } else {
+        return new HttpResponse(null, {
+          status: 401,
+          statusText: "Unauthorized",
+        });
+      }
     }
-  }),
+  ),
 ];

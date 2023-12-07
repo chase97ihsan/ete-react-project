@@ -16,7 +16,7 @@ function ProductContextProvider({ children }) {
 
   const deleteProduct = (id) => {
     axios
-      .delete(`http://localhost:3000/product/${id}`)
+      .delete(`https://ete-react-project.vercel.app/product/${id}`)
       .then((res) => {
         console.log(res.data);
         getProducts();
@@ -32,7 +32,7 @@ function ProductContextProvider({ children }) {
   const updateProduct = (product) => {
     const id = product.id;
     axios
-      .put(`http://localhost:3000/product/${id}`, product)
+      .put(`https://ete-react-project.vercel.app/product/${id}`, product)
       .then((res) => {
         getProducts();
         toast.success("Edited successfully!", {
@@ -46,7 +46,7 @@ function ProductContextProvider({ children }) {
 
   const getProducts = () => {
     axios
-      .get("http://localhost:3000/products/")
+      .get("https://ete-react-project.vercel.app/products/")
       .then((res) => {
         setAllProducts(res.data);
       })
@@ -58,7 +58,7 @@ function ProductContextProvider({ children }) {
 
   const createProduct = (product) => {
     axios
-      .post(`http://localhost:3000/product/create`, product)
+      .post(`https://ete-react-project.vercel.app/product/create`, product)
       .then((res) => {
         getProducts();
         toast.success("Added successfully!", {

@@ -16,7 +16,7 @@ function AuthContextProvider({ children }) {
 
   const logIn = (credentials) => {
     axios
-      .post("http://localhost:3000/auth/login", credentials)
+      .post("https://ete-react-project.vercel.app//auth/login", credentials)
       .then((res) => {
         if (res.data.token && res.data.token !== "") {
           setAuthInfo(res.data);
@@ -47,7 +47,7 @@ function AuthContextProvider({ children }) {
 
   const logOut = () => {
     axios
-      .post("http://localhost:3000/auth/logout")
+      .post("https://ete-react-project.vercel.app/auth/logout")
       .then((res) => {
         localStorage.removeItem("Token");
         localStorage.removeItem("tokenExpiration");
@@ -60,7 +60,7 @@ function AuthContextProvider({ children }) {
   };
   const signIn = (formdata) => {
     axios
-      .post("http://localhost:3000/auth/register", formdata)
+      .post("https://ete-react-project.vercel.app/auth/register", formdata)
       .then((res) => {
         if (res.data === true) {
           navigate("/logIn");

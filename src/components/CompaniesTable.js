@@ -1,4 +1,3 @@
-import useConfig from "antd/es/config-provider/hooks/useConfig";
 import { useContext, modalRef, useState, bootstrap } from "react";
 import { FaSortDown, FaSortUp, FaSort, FaBootstrap } from "react-icons/fa";
 import { CompanyContext } from "../contexts/CompanyContext";
