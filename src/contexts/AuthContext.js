@@ -16,7 +16,7 @@ function AuthContextProvider({ children }) {
 
   const logIn = (credentials) => {
     axios
-      .post("https://ete-react-project.vercel.app//auth/login", credentials)
+      .post("https://ete-react-project.vercel.app/auth/login", credentials)
       .then((res) => {
         if (res.data.token && res.data.token !== "") {
           setAuthInfo(res.data);
